@@ -17,12 +17,39 @@ namespace DiplomAirport.Controllers
             _signInManager = signInManager;
         }
 
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync
+                    (model.Email, model.Password, model.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid Login Attempt");
+                }
+            }
+            return View(model);
+        }
+
+
         [HttpGet]
         public IActionResult Registration()
         {
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)

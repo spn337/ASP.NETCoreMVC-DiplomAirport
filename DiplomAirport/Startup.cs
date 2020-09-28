@@ -1,4 +1,5 @@
 using DiplomAirport.Data;
+using DiplomAirport.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,7 @@ namespace DiplomAirport
             });
 
             //Add Identity services
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 

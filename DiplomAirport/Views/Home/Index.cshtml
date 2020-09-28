@@ -3,7 +3,8 @@
 }
 
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> signInManager;
+@using DiplomAirport.Models;
+@inject SignInManager<ApplicationUser> signInManager;
 
 <div class="container">
     <nav class="navbar navbar-light bg-light d-flex justify-content-end">

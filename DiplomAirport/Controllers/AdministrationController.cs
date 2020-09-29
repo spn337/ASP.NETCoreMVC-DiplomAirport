@@ -2,6 +2,8 @@
 using DiplomAirport.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace DiplomAirport.Controllers
@@ -61,7 +63,7 @@ namespace DiplomAirport.Controllers
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
-                return View("Not Found");
+                return View("NotFound");
             }
 
             var model = new EditRoleViewModel
@@ -81,6 +83,7 @@ namespace DiplomAirport.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
@@ -89,7 +92,7 @@ namespace DiplomAirport.Controllers
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with Id = {model.Id} cannot be found";
-                return View("Not Found");
+                return View("NotFound");
             }
 
             role.Name = model.RoleName;
@@ -109,5 +112,79 @@ namespace DiplomAirport.Controllers
             return View(model);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> EditUsersInRole(string roleId)
+        {
+            ViewBag.roleId = roleId;
+
+            var role = await _roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+                return View("NotFound");
+            }
+
+            var modelList = new List<UserRoleViewModel>();
+
+            foreach (var user in _userManager.Users)
+            {
+                var model = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName
+                };
+
+                model.IsSelected = await _userManager.IsInRoleAsync(user, role.Name) ? true : false;
+
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> modelList, string roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
+                return View("NotFound");
+            }
+
+            for (int i = 0; i < modelList.Count; i++)
+            {
+                var user = await _userManager.FindByIdAsync(modelList[i].UserId);
+                var isUserInRole = await _userManager.IsInRoleAsync(user, role.Name);
+
+                IdentityResult result = null;
+
+                if (modelList[i].IsSelected && !(isUserInRole))
+                {
+                    result = await _userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (!(modelList[i].IsSelected) && isUserInRole)
+                {
+                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (result.Succeeded)
+                {
+                    if (i < (modelList.Count - 1))
+                    {
+                        continue;
+                    }
+                }
+            }
+           
+            return RedirectToAction("EditRole", new { Id = roleId });
+        }
     }
 }

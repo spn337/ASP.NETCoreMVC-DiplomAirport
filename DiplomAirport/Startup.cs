@@ -42,6 +42,8 @@ namespace DiplomAirport
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStatusCodePages();
+
             app.UseStaticFiles();
 
             app.UseRouting();

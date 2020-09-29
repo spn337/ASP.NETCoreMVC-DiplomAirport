@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Not Found";
+}
+
+<div class="alert alert-danger m-1">
+    <h4>404 Not Found Error: </h4>
+    <hr />
+    <h5>@ViewBag.ErrorMessage</h5>
+</div>
+
+<div class="m-1">
+    <a class="btn btn-danger" asp-action="Index" asp-controller="Home">
+        Return to home page
+    </a>
+</div>

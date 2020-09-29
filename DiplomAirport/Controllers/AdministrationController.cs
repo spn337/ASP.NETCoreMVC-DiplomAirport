@@ -13,11 +13,10 @@ namespace DiplomAirport.Controllers
             _roleManager = roleManager;
         }
 
+
         [HttpGet]
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
+        public IActionResult CreateRole() => View();
+
 
         [HttpPost]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel model)
@@ -44,5 +43,10 @@ namespace DiplomAirport.Controllers
 
             return View(model);
         }
+
+
+        [HttpGet]
+        public IActionResult ListRoles() => View(_roleManager.Roles);
+        
     }
 }

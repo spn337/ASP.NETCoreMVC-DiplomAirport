@@ -22,18 +22,25 @@ namespace DiplomAirport.ViewModels
 
         [Required]
         [EmailAddress]
-        [StringLength(50, ErrorMessage = "Email max length is 50")]
+        [StringLength(50, 
+            ErrorMessage = "Max length is 50")]
         [Remote(action: "IsEmailInUse", controller: "Account")]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(50, 
+            ErrorMessage = "Max length is 50")]
+
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password",
             ErrorMessage = "Password and confirmation password do not match.")]
+        [StringLength(50, 
+            ErrorMessage = "Max length is 50")]
+
         public string ConfirmPassword { get; set; }
 
         [Required]

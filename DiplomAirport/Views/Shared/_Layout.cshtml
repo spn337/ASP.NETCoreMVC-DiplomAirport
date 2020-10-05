@@ -1,20 +1,47 @@
 ﻿<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Airport</title>
-        <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
-    </head>
-    <body>
-        <header>
-        </header>
-        @RenderBody()
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airport</title>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-primary ml-1"
+                           asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
+                    }
+                    <form method="post" asp-controller="Account" asp-action="Logout">
+                        <button type="submit" class="btn btn-primary ml-1">
+                            Logout @User.Identity.Name
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <div>
+                        <a class="btn btn-primary ml-1"
+                           asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="btn btn-primary ml-1"
+                           asp-controller="Account" asp-action="Registration">Registration</a>
+                    </div>
+                }
+            </nav>
+        </div>
+    </header>
+
+    @RenderBody()
     <footer>
         <script src="~/lib/jquery/jquery.js"></script>
         <script src="~/lib/jquery-validate/jquery.validate.js"></script>
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/js/CustomScript.js"></script>
     </footer>
-    </body>
+</body>
 </html>

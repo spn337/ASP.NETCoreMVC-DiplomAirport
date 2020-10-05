@@ -1,0 +1,21 @@
+﻿<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            @if (ViewBag.ErrorTitle == null)
+            {
+
+                <h3>
+                    Something was wrong
+                </h3>
+                <h5>
+                    but the support team is notified and we are working on the fix
+                </h5>
+            }
+            else
+            {
+                <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
+                <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
+            }
+        </div>
+    </div>
+</div>

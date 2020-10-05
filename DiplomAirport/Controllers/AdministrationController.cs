@@ -2,6 +2,7 @@
 using DiplomAirport.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -183,7 +184,7 @@ namespace DiplomAirport.Controllers
                     }
                 }
             }
-           
+
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
@@ -198,19 +199,28 @@ namespace DiplomAirport.Controllers
                 return View("NotFound");
             }
 
-            var result = await _roleManager.DeleteAsync(role);
-
-            if(result.Succeeded)
+            try
             {
-                return RedirectToAction("ListRoles");
-            }
+                var result = await _roleManager.DeleteAsync(role);
 
-            foreach (var error in result.Errors)
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("ListRoles");
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", error.Description);
+                ViewBag.ErrorTitle = $"{role.Name} role is in use";
+                ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role";
+                return View("Error");
             }
-
-            return View("ListRoles");
         }
     }
 }

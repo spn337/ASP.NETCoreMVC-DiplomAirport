@@ -1,5 +1,6 @@
 ﻿using DiplomAirport.Models;
 using DiplomAirport.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DiplomAirport.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         public RoleManager<IdentityRole> _roleManager;
@@ -19,6 +21,10 @@ namespace DiplomAirport.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
+        #region Roles manage
+        [HttpGet]
+        public IActionResult ListRoles() => View(_roleManager.Roles);
 
 
         [HttpGet]
@@ -50,11 +56,7 @@ namespace DiplomAirport.Controllers
 
             return View(model);
         }
-
-
-        [HttpGet]
-        public IActionResult ListRoles() => View(_roleManager.Roles);
-
+       
 
         [HttpGet]
         public async Task<IActionResult> EditRole(string id)
@@ -145,6 +147,7 @@ namespace DiplomAirport.Controllers
             return View(modelList);
         }
 
+
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> modelList, string roleId)
         {
@@ -188,6 +191,7 @@ namespace DiplomAirport.Controllers
             return RedirectToAction("EditRole", new { Id = roleId });
         }
 
+
         [HttpPost]
         public async Task<IActionResult> DeleteRole(string id)
         {
@@ -222,5 +226,11 @@ namespace DiplomAirport.Controllers
                 return View("Error");
             }
         }
+        #endregion
+
+        #region Users manage
+        [HttpGet]
+        public IActionResult ListUsers() => View(_userManager.Users);
+        #endregion
     }
 }

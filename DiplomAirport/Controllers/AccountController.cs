@@ -1,5 +1,6 @@
 ﻿using DiplomAirport.Models;
 using DiplomAirport.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -84,8 +85,15 @@ namespace DiplomAirport.Controllers
 
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("ListUsers", "Administration");
+                    }
+                    else
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
@@ -103,7 +111,7 @@ namespace DiplomAirport.Controllers
         {
             var user = await _userManager.FindByEmailAsync(email);
 
-            if(user == null)
+            if (user == null)
             {
                 return Json(true);
             }
@@ -112,5 +120,8 @@ namespace DiplomAirport.Controllers
                 return Json($"Email {email} is already in use");
             }
         }
+
+        [HttpGet]
+        public IActionResult AccessDenied() => View();
     }
 }

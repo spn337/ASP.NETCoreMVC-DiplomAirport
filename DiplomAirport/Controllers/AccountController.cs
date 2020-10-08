@@ -1,6 +1,5 @@
 ﻿using DiplomAirport.Models;
 using DiplomAirport.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -21,10 +20,7 @@ namespace DiplomAirport.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
@@ -61,10 +57,7 @@ namespace DiplomAirport.Controllers
         }
 
         [HttpGet]
-        public IActionResult Registration()
-        {
-            return View();
-        }
+        public IActionResult Registration() => View();
 
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
@@ -73,10 +66,10 @@ namespace DiplomAirport.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
                     Email = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    UserName = model.Email,
                     Gender = model.Gender,
                     Country = model.Country
                 };

@@ -16,7 +16,9 @@ namespace DiplomAirport.Controllers
         public RoleManager<IdentityRole> _roleManager;
         private UserManager<ApplicationUser> _userManager;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdministrationController(
+            RoleManager<IdentityRole> roleManager, 
+            UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -292,6 +294,41 @@ namespace DiplomAirport.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+
+            try
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListUsers");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View("ListUsers");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorTitle = $"{user.UserName} user is in role";
+                ViewBag.ErrorMessage = $"{user.UserName} user cannot be deleted as there are roles in this user";
+                return View("Error");
+            }
         }
         #endregion
     }

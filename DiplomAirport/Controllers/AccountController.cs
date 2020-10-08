@@ -10,12 +10,16 @@ namespace DiplomAirport.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
 
@@ -74,10 +78,23 @@ namespace DiplomAirport.Controllers
                     Country = model.Country
                 };
 
+                var roleNameDefault = "User";
+                var role = await _roleManager.FindByNameAsync(roleNameDefault);
+                if(role == null)
+                {
+                    role = new IdentityRole
+                    {
+                        Name = roleNameDefault
+                    };
+                    await _roleManager.CreateAsync(role);
+                }
+
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, role.Name);
+
                     if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         return RedirectToAction("ListUsers", "Administration");

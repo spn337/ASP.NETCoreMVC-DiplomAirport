@@ -13,8 +13,8 @@ namespace DiplomAirport.Controllers
     [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
-        public RoleManager<IdentityRole> _roleManager;
-        private UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AdministrationController(
             RoleManager<IdentityRole> roleManager, 
@@ -23,6 +23,7 @@ namespace DiplomAirport.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
 
         #region Roles manage
         [HttpGet]
@@ -411,7 +412,8 @@ namespace DiplomAirport.Controllers
             return RedirectToAction("EditUser", new { Id = userId });
         }
 
-
         #endregion
+
+
     }
 }

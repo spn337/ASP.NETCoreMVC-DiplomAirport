@@ -131,11 +131,11 @@ namespace DiplomAirport.Controllers
                 return View("NotFound");
             }
 
-            var modelList = new List<UserRoleViewModel>();
+            var modelList = new List<UsersInRoleViewModel>();
 
             foreach (var user in _userManager.Users)
             {
-                var model = new UserRoleViewModel
+                var model = new UsersInRoleViewModel
                 {
                     UserId = user.Id,
                     UserName = user.UserName
@@ -151,7 +151,7 @@ namespace DiplomAirport.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> modelList, string roleId)
+        public async Task<IActionResult> EditUsersInRole(List<UsersInRoleViewModel> modelList, string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);
 
@@ -230,9 +230,11 @@ namespace DiplomAirport.Controllers
         }
         #endregion
 
+
         #region Users manage
         [HttpGet]
         public IActionResult ListUsers() => View(_userManager.Users);
+
 
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
@@ -262,6 +264,7 @@ namespace DiplomAirport.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
@@ -295,6 +298,7 @@ namespace DiplomAirport.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
@@ -330,6 +334,84 @@ namespace DiplomAirport.Controllers
                 return View("Error");
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditRolesInUser(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var modelList = new List<RolesInUserViewModel>();
+
+            foreach (var role in _roleManager.Roles)
+            {
+                var model = new RolesInUserViewModel
+                {
+                   RoleId = role.Id,
+                   RoleName = role.Name
+                };
+
+                model.IsSelected = await _userManager.IsInRoleAsync(user, role.Name) ? true : false;
+
+                modelList.Add(model);
+            }
+
+            return View(modelList);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditRolesInUser(List<RolesInUserViewModel> modelList, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            for (int i = 0; i < modelList.Count; i++)
+            {
+                var role = await _roleManager.FindByIdAsync(modelList[i].RoleId);
+                var isRoleInUser= await _userManager.IsInRoleAsync(user, role.Name);
+
+                IdentityResult result = null;
+
+                if (modelList[i].IsSelected && !(isRoleInUser))
+                {
+                    result = await _userManager.AddToRoleAsync(user, role.Name);
+                }
+                else if (!(modelList[i].IsSelected) && isRoleInUser)
+                {
+                    result = await _userManager.RemoveFromRoleAsync(user, role.Name);
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (result.Succeeded)
+                {
+                    if (i < (modelList.Count - 1))
+                    {
+                        continue;
+                    }
+                }
+            }
+
+            return RedirectToAction("EditUser", new { Id = userId });
+        }
+
+
         #endregion
     }
 }

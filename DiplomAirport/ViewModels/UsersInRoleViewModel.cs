@@ -1,6 +1,6 @@
 ﻿namespace DiplomAirport.ViewModels
 {
-    public class UserRoleViewModel
+    public class UsersInRoleViewModel
     {
         public string UserId { get; set; }
         public string UserName { get; set; }

@@ -3,25 +3,9 @@
 
         @if (ViewBag.ErrorTitle == null)
         {
-            <h3>Bad request</h3>
+            <h3>Something was wrong</h3>
+            <h3>But we are already working on the fix</h3>
             <hr />
-            <h3>Exception Details:</h3>
-            <div>
-                <h5>Exception Path:</h5>
-                <hr />
-                <p>@ViewBag.ExceptionPath</p>
-
-            </div>
-            <div>
-                <h5>Exception Message:</h5>
-                <hr />
-                <p>@ViewBag.ExceptionMessage</p>
-            </div>
-            <div>
-                <h5>Exception Stack Trace:</h5>
-                <hr />
-                <p>@ViewBag.StackTrace</p>
-            </div>
         }
         else
         {

@@ -3,7 +3,8 @@ using DiplomAirport.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,13 +16,16 @@ namespace DiplomAirport.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<AdministrationController> _logger;
 
         public AdministrationController(
-            RoleManager<IdentityRole> roleManager, 
-            UserManager<ApplicationUser> userManager)
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager,
+            ILogger<AdministrationController> logger)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
 
@@ -222,8 +226,9 @@ namespace DiplomAirport.Controllers
 
                 return View("ListRoles");
             }
-            catch
+            catch (DbUpdateException ex)
             {
+                _logger.LogError($"Exception Occured: {ex}");
                 ViewBag.ErrorTitle = $"{role.Name} role is in use";
                 ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role";
                 return View("Error");
@@ -328,8 +333,9 @@ namespace DiplomAirport.Controllers
 
                 return View("ListUsers");
             }
-            catch
+            catch(DbUpdateException ex)
             {
+                _logger.LogError($"Exception Occured: {ex}");
                 ViewBag.ErrorTitle = $"{user.UserName} user is in role";
                 ViewBag.ErrorMessage = $"{user.UserName} user cannot be deleted as there are roles in this user";
                 return View("Error");
@@ -356,8 +362,8 @@ namespace DiplomAirport.Controllers
             {
                 var model = new RolesInUserViewModel
                 {
-                   RoleId = role.Id,
-                   RoleName = role.Name
+                    RoleId = role.Id,
+                    RoleName = role.Name
                 };
 
                 model.IsSelected = await _userManager.IsInRoleAsync(user, role.Name) ? true : false;
@@ -383,7 +389,7 @@ namespace DiplomAirport.Controllers
             for (int i = 0; i < modelList.Count; i++)
             {
                 var role = await _roleManager.FindByIdAsync(modelList[i].RoleId);
-                var isRoleInUser= await _userManager.IsInRoleAsync(user, role.Name);
+                var isRoleInUser = await _userManager.IsInRoleAsync(user, role.Name);
 
                 IdentityResult result = null;
 

@@ -1,21 +1,39 @@
-﻿<div class="container mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-6 m-auto">
-            @if (ViewBag.ErrorTitle == null)
-            {
+﻿<div class="container mt-3 mb-3">
+    <div class="alert alert-danger mb-3">
 
-                <h3>
-                    Something was wrong
-                </h3>
-                <h5>
-                    but the support team is notified and we are working on the fix
-                </h5>
-            }
-            else
-            {
-                <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
-                <h6 class="text-danger">@ViewBag.ErrorMessage</h6>
-            }
-        </div>
+        @if (ViewBag.ErrorTitle == null)
+        {
+            <h3>Bad request</h3>
+            <hr />
+            <h3>Exception Details:</h3>
+            <div>
+                <h5>Exception Path:</h5>
+                <hr />
+                <p>@ViewBag.ExceptionPath</p>
+
+            </div>
+            <div>
+                <h5>Exception Message:</h5>
+                <hr />
+                <p>@ViewBag.ExceptionMessage</p>
+            </div>
+            <div>
+                <h5>Exception Stack Trace:</h5>
+                <hr />
+                <p>@ViewBag.StackTrace</p>
+            </div>
+        }
+        else
+        {
+            <h2>@ViewBag.ErrorTitle</h2>
+            <h6>@ViewBag.ErrorMessage</h6>
+        }
+
+    </div>
+
+    <div>
+        <a class="btn btn-danger" asp-action="Index" asp-controller="Home">
+            Return to home page
+        </a>
     </div>
 </div>

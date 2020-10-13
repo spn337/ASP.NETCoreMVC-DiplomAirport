@@ -42,7 +42,7 @@ namespace DiplomAirport
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStatusCodePages();
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseStaticFiles();
 

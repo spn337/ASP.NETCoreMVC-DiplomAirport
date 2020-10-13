@@ -222,7 +222,7 @@ namespace DiplomAirport.Controllers
 
                 return View("ListRoles");
             }
-            catch (Exception ex)
+            catch
             {
                 ViewBag.ErrorTitle = $"{role.Name} role is in use";
                 ViewBag.ErrorMessage = $"{role.Name} role cannot be deleted as there are users in this role";
@@ -328,7 +328,7 @@ namespace DiplomAirport.Controllers
 
                 return View("ListUsers");
             }
-            catch (Exception ex)
+            catch
             {
                 ViewBag.ErrorTitle = $"{user.UserName} user is in role";
                 ViewBag.ErrorMessage = $"{user.UserName} user cannot be deleted as there are roles in this user";

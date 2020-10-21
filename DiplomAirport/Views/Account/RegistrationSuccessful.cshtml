@@ -1,0 +1,21 @@
+﻿<div class="container mt-3 mb-3">
+    <div class="alert alert-primary mb-3">
+        <h2>@ViewBag.Title</h2>
+        <h6>@ViewBag.Message</h6>
+    </div>
+
+    <div>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+        {
+            <a class="btn btn-danger" asp-action="ListUsers" asp-controller="Administration">
+                Return to list users
+            </a>
+        }
+        else
+        {
+            <a class="btn btn-danger" asp-action="Index" asp-controller="Home">
+                Return to home page
+            </a>
+        }
+    </div>
+</div>

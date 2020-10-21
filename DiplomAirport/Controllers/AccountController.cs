@@ -1,4 +1,5 @@
-﻿using DiplomAirport.Models;
+﻿using DiplomAirport.Helpers;
+using DiplomAirport.Models;
 using DiplomAirport.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,18 @@ namespace DiplomAirport.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly EmailService _emailService;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            EmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
 
@@ -31,6 +35,15 @@ namespace DiplomAirport.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && !user.EmailConfirmed &&
+                    (await _userManager.CheckPasswordAsync(user, model.Password)))
+                {
+                    ModelState.AddModelError("", "Email not confirmed yet");
+                    return View(model);
+                }
+
                 var result = await _signInManager.PasswordSignInAsync
                     (model.Email, model.Password, model.RememberMe, false);
 
@@ -63,6 +76,13 @@ namespace DiplomAirport.Controllers
         [HttpGet]
         public IActionResult Registration() => View();
 
+        //[HttpGet]
+        //public IActionResult SendMessage()
+        //{
+        //    _emailService.SendEmail("spn337@gmail.com", "Confirm your account",
+        //                $"Confirm your registration by link");
+        //    return RedirectToAction("Index", "Home");
+        //}
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
@@ -80,7 +100,7 @@ namespace DiplomAirport.Controllers
 
                 var roleNameDefault = "User";
                 var role = await _roleManager.FindByNameAsync(roleNameDefault);
-                if(role == null)
+                if (role == null)
                 {
                     role = new IdentityRole
                     {
@@ -95,15 +115,17 @@ namespace DiplomAirport.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, role.Name);
 
-                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("ListUsers", "Administration");
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Index", "Home");
-                    }
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                        new { userId = user.Id, token }, Request.Scheme);
+
+                    _emailService.SendEmail(model.Email, "Confirm your account",
+                        $"Confirm your registration by : <a href='{confirmationLink}'>link</a>");
+
+                    ViewBag.Title = "Registration successful";
+                    ViewBag.Message = "Before you can Login, please confirm your email";
+                    return View("RegistrationSuccessful");
                 }
                 else
                 {
@@ -115,6 +137,42 @@ namespace DiplomAirport.Controllers
             }
             return View(model);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (userId == null || token == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} or token {token} are invalid";
+                return View("Error");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+            else if (user.EmailConfirmed)
+            {
+                ViewBag.ErrorTitle = "Email is already confirming";
+                return View("Error");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            else
+            {
+                ViewBag.ErrorTitle = "Email cannot be confirmed";
+                return View("Error");
+            }
+        }
+
 
         [AcceptVerbs("Get", "Post")]
         public async Task<IActionResult> IsEmailInUse(string email)

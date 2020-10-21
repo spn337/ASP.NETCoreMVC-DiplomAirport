@@ -7,14 +7,8 @@
     <div>
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
-            <a class="btn btn-danger" asp-action="ListUsers" asp-controller="Administration">
+            <a class="btn btn-outline-danger" asp-action="ListUsers" asp-controller="Administration">
                 Return to list users
-            </a>
-        }
-        else
-        {
-            <a class="btn btn-danger" asp-action="Index" asp-controller="Home">
-                Return to home page
             </a>
         }
     </div>

@@ -26,9 +26,6 @@ namespace DiplomAirport.Helpers
         {
             try
             {
-                //
-                //налаштувати google smtp-server та відправити лист
-                //
                 var emailMessage = new MimeMessage();
 
                 emailMessage.From.Add(new MailboxAddress("ToyStore", _smtp.login));

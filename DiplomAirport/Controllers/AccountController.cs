@@ -125,7 +125,7 @@ namespace DiplomAirport.Controllers
 
                     ViewBag.Title = "Registration successful";
                     ViewBag.Message = "Before you can Login, please confirm your email";
-                    return View("RegistrationSuccessful");
+                    return View("Info");
                 }
                 else
                 {
@@ -164,7 +164,8 @@ namespace DiplomAirport.Controllers
 
             if (result.Succeeded)
             {
-                return View();
+                ViewBag.Message = "Thank you to comfirm your e-mail";
+                return View("Info");
             }
             else
             {
@@ -191,5 +192,68 @@ namespace DiplomAirport.Controllers
 
         [HttpGet]
         public IActionResult AccessDenied() => View();
+
+        [HttpGet]
+        public IActionResult ForgotPassword() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                    var passwordResetLink = Url.Action("ResetPassword", "Account",
+                        new { email = model.Email, token }, Request.Scheme);
+
+                    _emailService.SendEmail(model.Email, "Reset your password",
+                        $"Reset your password by : <a href='{passwordResetLink}'>link</a>");
+
+                }
+
+                ViewBag.Message = "We sent an email with the instructions to reset your password";
+                return View("Info");
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (email == null || token == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+                    if (!result.Succeeded)
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                        return View(model);
+                    }
+                }
+                ViewBag.Message = "Thank you to reset your password";
+                return View("Info");
+            }
+            return View(model);
+        }
     }
 }

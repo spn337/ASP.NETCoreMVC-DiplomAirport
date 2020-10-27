@@ -1,4 +1,6 @@
 using DiplomAirport.Data;
+using DiplomAirport.Data.AbstractRepo;
+using DiplomAirport.Data.ConcreteRepo;
 using DiplomAirport.Helpers;
 using DiplomAirport.Models;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,8 @@ namespace DiplomAirport
                 })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<IProductRepository, MockRepository>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();

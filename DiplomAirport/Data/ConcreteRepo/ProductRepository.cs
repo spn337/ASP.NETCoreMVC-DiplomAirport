@@ -1,6 +1,7 @@
 ﻿using DiplomAirport.Data.AbstractRepo;
 using DiplomAirport.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DiplomAirport.Data.ConcreteRepo
 {
@@ -11,12 +12,19 @@ namespace DiplomAirport.Data.ConcreteRepo
         {
             _context = context;
         }
-        public IEnumerable<Product> Products
+        public IEnumerable<Product> GetProducts()
         {
-            get
-            {
-                return _context.Products;
-            }
+            return _context.Products.ToList();
+        }
+
+        public Product GetProductById(string id)
+        {
+            return _context.Products.FirstOrDefault(p => p.Id == id);
+        }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() >= 0);
         }
     }
 }

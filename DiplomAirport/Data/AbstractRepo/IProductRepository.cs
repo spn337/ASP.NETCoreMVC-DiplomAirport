@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace DiplomAirport.Data.AbstractRepo
 {
-    interface IProductRepository
+    public interface IProductRepository
     {
-        IEnumerable<Product> Products { get; }
+        bool SaveChanges();
+        IEnumerable<Product> GetProducts();
+        Product GetProductById(string id);
     }
 }

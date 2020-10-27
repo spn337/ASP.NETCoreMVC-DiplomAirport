@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DiplomAirport.Models
 {
+    [Table("tblProducts")]
     public class Product
     {
+        [Key]
         public string Id { get; set; }
 
         [Required]
@@ -12,6 +15,9 @@ namespace DiplomAirport.Models
         public string Description { get; set; }
 
         [Required]
-        public ushort Price { get; set; }
+        public decimal Price { get; set; }
+
+        [Required]
+        public int Count { get; set; }
     }
 }

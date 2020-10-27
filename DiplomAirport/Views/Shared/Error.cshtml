@@ -1,0 +1,17 @@
+﻿<div class="container mt-3 mb-3">
+    <div class="alert alert-danger mb-3">
+
+        @if (ViewBag.ErrorTitle == null)
+        {
+            <h3>Something was wrong</h3>
+            <h3>But we are already working on the fix</h3>
+            <hr />
+        }
+        else
+        {
+            <h2>@ViewBag.ErrorTitle</h2>
+            <h6>@ViewBag.ErrorMessage</h6>
+        }
+
+    </div>
+</div>

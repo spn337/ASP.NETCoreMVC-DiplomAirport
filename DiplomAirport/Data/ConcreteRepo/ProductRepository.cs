@@ -12,15 +12,13 @@ namespace DiplomAirport.Data.ConcreteRepo
         {
             _context = context;
         }
-        public IEnumerable<Product> GetProducts()
-        {
-            return _context.Products.ToList();
-        }
+        public IEnumerable<Product> GetProducts() 
+            => _context.Products;
+
 
         public Product GetProductById(string id)
-        {
-            return _context.Products.FirstOrDefault(p => p.Id == id);
-        }
+            => _context.Products.FirstOrDefault(p => p.Id == id);
+        
 
         public bool SaveChanges()
         {

@@ -31,7 +31,14 @@ namespace DiplomAirport.Data.ConcreteRepo
         }
         public Product GetProductById(string id)
         {
-            throw new NotImplementedException();
+            return new Product
+            {
+                Id = "1",
+                Name = "БРЯЗКАЛЬЦЕ МЯКА В РУЧКУ FISHER PRICE GH73133 (48ШТ) ЖИРАФ, НА ЗРУЧНОМУ КІЛЬЦІ З КУЛЬКАМИ ВНУТРИ9*13",
+                Description = "Вона виконана з мякого, міцного матеріалу в яскравих райдужних кольорах. Крім мякої частини у брязкальця є невелика прозора ручка з пластмаси, всередині якої знаходяться маленькі кульки. Якщо потрясти іграшку, то вона буде гриміти. Такі звуки привертають увагу малюка і заспокоюють його.",
+                Price = 183.47M,
+                Count = 24
+            };
         }
 
         public bool SaveChanges()

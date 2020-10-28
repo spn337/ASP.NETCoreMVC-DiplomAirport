@@ -10,7 +10,6 @@ namespace DiplomAirport.Models
         public string Id { get; set; }
 
         [Required]
-        [MaxLength(30, ErrorMessage = "Name can't exceed 30 characters")]
         public string Name { get; set; }
         public string Description { get; set; }
 

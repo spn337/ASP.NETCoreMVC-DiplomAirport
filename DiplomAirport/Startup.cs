@@ -66,6 +66,12 @@ namespace DiplomAirport
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                Seeder.SeedData(context);
+            }
         }
     }
 }

@@ -69,8 +69,8 @@ namespace DiplomAirport
 
             using (var scope = app.ApplicationServices.CreateScope())
             {
-                AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                Seeder.SeedData(context);
+                Seeder.SeedData(scope.ServiceProvider);
+                Seeder.CreateAdminAccount(scope.ServiceProvider, Configuration).Wait();
             }
         }
     }

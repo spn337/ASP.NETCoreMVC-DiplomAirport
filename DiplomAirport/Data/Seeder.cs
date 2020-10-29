@@ -1,14 +1,51 @@
 ﻿using DiplomAirport.Models;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DiplomAirport.Data
 {
-    public class Seeder
+    public static class Seeder
     {
-        public static void SeedData(AppDbContext context)
+        public static async Task CreateAdminAccount(
+            IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            context.Database.Migrate();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var user = new ApplicationUser
+            {
+                Email = configuration["Data:AdminUser:Email"],
+                FirstName = configuration["Data:AdminUser:FirstName"],
+                LastName = configuration["Data:AdminUser:LastName"],
+                UserName = configuration["Data:AdminUser:UserName"],
+                EmailConfirmed = true
+            };
+            var password = configuration["Data:AdminUser:Password"];
+            var role = configuration["Data:AdminUser:Role"];
+
+            if (await userManager.FindByEmailAsync(user.UserName) == null)
+            {
+                if (await roleManager.FindByNameAsync(role) == null)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+
+                var result = await userManager.CreateAsync(user, password);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
+            }
+        }
+        
+        public static void SeedData(IServiceProvider serviceProvider)
+        {
+            var context = serviceProvider.GetRequiredService<AppDbContext>();
+            //якщо немає продуктів - додаємо дефолтні
             if (!context.Products.Any())
             {
                 context.Products.AddRange(
@@ -32,5 +69,6 @@ namespace DiplomAirport.Data
                 context.SaveChanges();
             }
         }
+
     }
 }

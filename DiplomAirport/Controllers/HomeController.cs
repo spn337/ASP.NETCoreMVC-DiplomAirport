@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DiplomAirport.Data.AbstractRepo;
+using DiplomAirport.ViewModels.Products;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomAirport.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IProductRepository _repository;
+        public HomeController(IProductRepository repository)
         {
-            return View();
+            _repository = repository;
         }
+
+        [HttpGet]
+        public IActionResult Index() 
+            => View(new ProductListViewModel
+            {
+                Products = _repository.GetProducts()
+            });
     }
 }

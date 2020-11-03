@@ -16,7 +16,7 @@ namespace DiplomAirport.Data.ConcreteRepo
             => _context.Products;
 
 
-        public Product GetProductById(string id)
+        public Product GetProductById(int id)
             => _context.Products.FirstOrDefault(p => p.Id == id);
         
 

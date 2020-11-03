@@ -38,7 +38,7 @@ namespace DiplomAirport
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<IProductRepository, MockRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();

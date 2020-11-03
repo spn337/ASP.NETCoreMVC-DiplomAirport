@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiplomAirport.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201028103916_Add tblProducts")]
+    [Migration("20201103100751_Add tblProducts")]
     partial class AddtblProducts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,8 +100,10 @@ namespace DiplomAirport.Migrations
 
             modelBuilder.Entity("DiplomAirport.Models.Product", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Count")
                         .HasColumnType("int");

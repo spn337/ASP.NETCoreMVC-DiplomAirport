@@ -7,6 +7,6 @@ namespace DiplomAirport.Data.AbstractRepo
     {
         bool SaveChanges();
         IEnumerable<Product> GetProducts();
-        Product GetProductById(string id);
+        Product GetProductById(int id);
     }
 }

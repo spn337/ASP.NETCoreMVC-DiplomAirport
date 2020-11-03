@@ -1,5 +1,4 @@
 ﻿using DiplomToyStore.Data.AbstractRepo;
-using DiplomToyStore.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomToyStore.Controllers
@@ -13,10 +12,7 @@ namespace DiplomToyStore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index() 
-            => View(new ProductListViewModel
-            {
-                Products = _repository.GetProducts()
-            });
+        public IActionResult Index()
+            => View(_repository.Products);
     }
 }

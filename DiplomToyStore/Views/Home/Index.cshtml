@@ -1,4 +1,4 @@
-﻿@model ProductListViewModel
+﻿@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "HomePage";
@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Products)
+                    @foreach (var item in Model)
                     {
                         <tr>
                             <th scope="row">@item.Id</th>

@@ -1,12 +1,10 @@
 ﻿using DiplomToyStore.Models;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace DiplomToyStore.Data.AbstractRepo
 {
     public interface IProductRepository
     {
-        bool SaveChanges();
-        IEnumerable<Product> GetProducts();
-        Product GetProductById(int id);
+        IQueryable<Product> Products { get; }
     }
 }

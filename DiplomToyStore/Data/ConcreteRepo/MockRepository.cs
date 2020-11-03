@@ -2,14 +2,14 @@
 using DiplomToyStore.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DiplomToyStore.Data.ConcreteRepo
 {
     public class MockRepository : IProductRepository
     {
-        public IEnumerable<Product> GetProducts()
-        {
-            return new List<Product>
+
+        public IQueryable<Product> Products => new List<Product>
             {
                 new Product
                 {
@@ -25,22 +25,6 @@ namespace DiplomToyStore.Data.ConcreteRepo
                     Price = 165.33M,
                     Count = 9
                 },
-            };
-        }
-        public Product GetProductById(int id)
-        {
-            return new Product
-            {
-                Name = "БРЯЗКАЛЬЦЕ МЯКА В РУЧКУ FISHER PRICE GH73133 (48ШТ) ЖИРАФ, НА ЗРУЧНОМУ КІЛЬЦІ З КУЛЬКАМИ ВНУТРИ9*13",
-                Description = "Вона виконана з мякого, міцного матеріалу в яскравих райдужних кольорах. Крім мякої частини у брязкальця є невелика прозора ручка з пластмаси, всередині якої знаходяться маленькі кульки. Якщо потрясти іграшку, то вона буде гриміти. Такі звуки привертають увагу малюка і заспокоюють його.",
-                Price = 183.47M,
-                Count = 24
-            };
-        }
-
-        public bool SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
+            }.AsQueryable();
     }
 }

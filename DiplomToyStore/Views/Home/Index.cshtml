@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model ProductListViewModel
 
 @{
     ViewData["Title"] = "HomePage";
@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Products)
                     {
                         <tr>
                             <th scope="row">@item.Id</th>
@@ -31,6 +31,10 @@
                     }
                 </tbody>
             </table>
+            <div class="btn-group pull-right m-1" 
+                 page-model="@Model.PaggingInfo" page-action="Index"  
+                 page-classes-enabled="true" page-class="btn" 
+                 page-class-normal="btn-secondary" page-class-selected="btn-primary"></div>
         }
     </div>
 </div>

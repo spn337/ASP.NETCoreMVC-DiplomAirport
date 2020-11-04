@@ -7,5 +7,6 @@ namespace DiplomToyStore.ViewModels.Products
     {
         public IEnumerable<Product> Products { get; set; }
         public PageViewModel PaggingInfo { get; set; }
+        public string CurrentCategory { get; set; }
     }
 }

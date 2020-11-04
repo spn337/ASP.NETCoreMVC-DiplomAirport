@@ -65,9 +65,39 @@ namespace DiplomToyStore
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "pagination",
-                    pattern: "Products/Page{productPage}",
-                    defaults: new { Controller = "Home", action = "Index" });
+                       name: null,
+                       pattern: "Products/{category}/Page{productPage:int}",
+                       defaults: new { Controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                      name: null,
+                      pattern: "Products/Page{productPage:int}",
+                      defaults: new
+                      {
+                          Controller = "Home",
+                          action = "Index",
+                          productPage = 1
+                      });
+
+                endpoints.MapControllerRoute(
+                      name: null,
+                      pattern: "Products/{category}",
+                      defaults: new
+                      {
+                          Controller = "Home",
+                          action = "Index",
+                          productPage = 1
+                      });
+
+                endpoints.MapControllerRoute(
+                      name: null,
+                      pattern: "",
+                      defaults: new
+                      {
+                          Controller = "Home",
+                          action = "Index",
+                          productPage = 1
+                      });
 
                 endpoints.MapDefaultControllerRoute();
             });

@@ -16,10 +16,11 @@ namespace DiplomToyStore.Controllers
         }
 
         [HttpGet]
-        public ViewResult Index(int productPage = 1)
+        public ViewResult Index(string category, int productPage = 1)
             => View(new ProductListViewModel
             {
                 Products = _repository.Products
+                    .Where(p => category == null || p.Category.Name == category)
                     .OrderBy(p => p.Id)
                     .Skip((productPage - 1) * PageSize)
                     .Take(PageSize),
@@ -28,7 +29,8 @@ namespace DiplomToyStore.Controllers
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
                     TotalItems = _repository.Products.Count()
-                }
+                },
+                CurrentCategory = category
             });
     }
 }

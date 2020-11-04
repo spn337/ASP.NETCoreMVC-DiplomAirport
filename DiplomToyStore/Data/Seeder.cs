@@ -47,7 +47,31 @@ namespace DiplomToyStore.Data
         {
             var context = serviceProvider.GetRequiredService<AppDbContext>();
             context.Database.Migrate();
-            //якщо немає продуктів - додаємо дефолтні
+
+            #region SeedCategory
+
+            if (!context.Categories.Any())
+            {
+                context.Categories.AddRange(
+                    new Category
+                    {
+                        Name = "Брязкальця"
+                    },
+                    new Category
+                    {
+                        Name = "Ляльки"
+                    },
+                    new Category
+                    {
+                        Name = "Конструктори"
+                    });
+
+                context.SaveChanges();
+            }
+            #endregion
+
+            #region SeedProducts
+
             if (!context.Products.Any())
             {
                 context.Products.AddRange(
@@ -139,6 +163,7 @@ namespace DiplomToyStore.Data
 
                 context.SaveChanges();
             }
+            #endregion
         }
 
     }

@@ -1,10 +1,10 @@
-﻿using DiplomToyStore.Data.AbstractRepo;
+﻿using DiplomToyStore.Domain.AbstractRepo;
 using DiplomToyStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DiplomToyStore.Data.ConcreteRepo
+namespace DiplomToyStore.Domain.ConcreteRepo
 {
     public class MockRepository : IProductRepository
     {

@@ -8,33 +8,39 @@
     <div class="row">
         @if (User.Identity.IsAuthenticated)
         {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Products)
-                    {
+            <div id="categories" class="col-2">
+                @await Component.InvokeAsync("Categories")
+            </div>
+            <div class="col-10">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th scope="row">@item.Id</th>
-                            <td>@item.Name</td>
-                            <td>@item.Description</td>
-                            <td>@item.Price</td>
-                            <td>@item.Count</td>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Count</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="btn-group pull-right m-1" 
-                 page-model="@Model.PaggingInfo" page-action="Index"  
-                 page-classes-enabled="true" page-class="btn" 
-                 page-class-normal="btn-secondary" page-class-selected="btn-primary"></div>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr>
+                                <th scope="row">@item.Id</th>
+                                <td>@item.Name</td>
+                                <td>@item.Description</td>
+                                <td>@item.Price</td>
+                                <td>@item.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn-group m-auto"
+                 page-model="@Model.PaggingInfo" page-action="Index"
+                 page-classes-enabled="true" page-class="btn"
+                 page-class-normal="btn-secondary" page-class-selected="btn-primary"
+                 page-url-category="@Model.CurrentCategory"></div>
         }
     </div>
 </div>

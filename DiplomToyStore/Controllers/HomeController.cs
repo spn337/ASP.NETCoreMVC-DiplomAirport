@@ -1,4 +1,4 @@
-﻿using DiplomToyStore.Data.AbstractRepo;
+﻿using DiplomToyStore.Domain.AbstractRepo;
 using DiplomToyStore.ViewModels;
 using DiplomToyStore.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +24,14 @@ namespace DiplomToyStore.Controllers
                     .OrderBy(p => p.Id)
                     .Skip((productPage - 1) * PageSize)
                     .Take(PageSize),
+
                 PaggingInfo = new PageViewModel
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
                     TotalItems = _repository.Products.Count()
                 },
+
                 CurrentCategory = category
             });
     }

@@ -1,8 +1,8 @@
-﻿using DiplomToyStore.Data.AbstractRepo;
+﻿using DiplomToyStore.Domain.AbstractRepo;
 using DiplomToyStore.Models;
 using System.Linq;
 
-namespace DiplomToyStore.Data.ConcreteRepo
+namespace DiplomToyStore.Domain.ConcreteRepo
 {
     public class EFProductRepository : IProductRepository
     {
@@ -13,6 +13,6 @@ namespace DiplomToyStore.Data.ConcreteRepo
         }
         public IQueryable<Product> Products
             => _context.Products;
-        
+
     }
 }

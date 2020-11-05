@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace DiplomToyStore.Data
+namespace DiplomToyStore.Domain
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {

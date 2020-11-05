@@ -1,6 +1,6 @@
-using DiplomToyStore.Data;
-using DiplomToyStore.Data.AbstractRepo;
-using DiplomToyStore.Data.ConcreteRepo;
+using DiplomToyStore.Domain;
+using DiplomToyStore.Domain.AbstractRepo;
+using DiplomToyStore.Domain.ConcreteRepo;
 using DiplomToyStore.Helpers;
 using DiplomToyStore.Models;
 using Microsoft.AspNetCore.Builder;

@@ -1,7 +1,7 @@
 ﻿using DiplomToyStore.Models;
 using System.Linq;
 
-namespace DiplomToyStore.Data.AbstractRepo
+namespace DiplomToyStore.Domain.AbstractRepo
 {
     public interface IProductRepository
     {

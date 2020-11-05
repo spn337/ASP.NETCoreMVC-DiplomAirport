@@ -9,7 +9,7 @@ namespace DiplomToyStore.Controllers
     public class HomeController : Controller
     {
         private readonly IProductRepository _repository;
-        public int PageSize = 1;
+        public int PageSize = 10;
         public HomeController(IProductRepository repository)
         {
             _repository = repository;

@@ -9,7 +9,7 @@ namespace DiplomToyStore.Controllers
     public class HomeController : Controller
     {
         private readonly IProductRepository _repository;
-        public int PageSize = 10;
+        public int PageSize = 7;
         public HomeController(IProductRepository repository)
         {
             _repository = repository;
@@ -29,7 +29,9 @@ namespace DiplomToyStore.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = _repository.Products.Count()
+                    TotalItems = category == null ?
+                        _repository.Products.Count() :
+                        _repository.Products.Where(e => e.Category.Name == category).Count()
                 },
 
                 CurrentCategory = category

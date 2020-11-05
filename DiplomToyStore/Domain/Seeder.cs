@@ -48,7 +48,7 @@ namespace DiplomToyStore.Domain
             var context = serviceProvider.GetRequiredService<AppDbContext>();
             context.Database.Migrate();
 
-            
+
             var categories = new Dictionary<string, string>()
             {
                 ["Dolls"] = "Ляльки",
@@ -143,8 +143,8 @@ namespace DiplomToyStore.Domain
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Scooters"])?.Id
                         });
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
             }
 
             #endregion

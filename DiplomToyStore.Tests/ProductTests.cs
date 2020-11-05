@@ -4,9 +4,11 @@ using DiplomToyStore.Models;
 using DiplomToyStore.ViewComponents;
 using DiplomToyStore.ViewModels;
 using DiplomToyStore.ViewModels.Products;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Moq;
 using NLog.Web.LayoutRenderers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -85,6 +87,37 @@ namespace DiplomToyStore.Tests
                 .ViewData.Model).ToArray();
 
             Assert.True(Enumerable.SequenceEqual(new string[] { "Cat1", "Cat2", "Cat3" }, result));
+        }
+
+        [Fact]
+        public void Generate_Category_Specific_Product_Count()
+        {
+            Mock<IProductRepository> mock = new Mock<IProductRepository>();
+            mock.Setup(m => m.Products).Returns(new Product[] {
+                new Product{ Id = 1, Name = "Toy1", Category = new Category{Name = "Cat1" }},
+                new Product{ Id = 2, Name = "Toy2", Category = new Category{Name = "Cat2" }},
+                new Product{ Id = 3, Name = "Toy3", Category = new Category{Name = "Cat1" } },
+                new Product{ Id = 4, Name = "Toy4", Category = new Category{Name = "Cat2" } },
+                new Product{ Id = 5, Name = "Toy5", Category = new Category{Name = "Cat3" } },
+            }.AsQueryable());
+
+            HomeController controller = new HomeController(mock.Object)
+            {
+                PageSize = 3
+            };
+
+            Func<ViewResult, ProductListViewModel> GetModel
+                = result => result?.ViewData?.Model as ProductListViewModel;
+
+            int? res1 = GetModel(controller.Index("Cat1"))?.PaggingInfo.TotalItems;
+            int? res2 = GetModel(controller.Index("Cat2"))?.PaggingInfo.TotalItems;
+            int? res3 = GetModel(controller.Index("Cat3"))?.PaggingInfo.TotalItems;
+            int? resAll = GetModel(controller.Index(null))?.PaggingInfo.TotalItems;
+
+            Assert.Equal(2, res1);
+            Assert.Equal(2, res2);
+            Assert.Equal(1, res3);
+            Assert.Equal(5, resAll);
         }
     }
 }

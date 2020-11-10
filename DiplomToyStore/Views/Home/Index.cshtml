@@ -12,29 +12,29 @@
                 @await Component.InvokeAsync("Categories")
             </div>
             <div class="col-10">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Products)
-                        {
-                            <tr>
-                                <th scope="row">@item.Id</th>
-                                <td>@item.Name</td>
-                                <td>@item.Description</td>
-                                <td>@item.Price</td>
-                                <td>@item.Count</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <div class="d-flex justify-content-between flex-wrap ">
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="card mb-4" style="width: 18rem;">
+                            <img class="card-img-top" src ="~/img/2.jpg" alt="@item.Name" />
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="card-title">@item.Price</h4>
+                                    <a class="btn btn-warning">В кошик</a>
+                                </div>
+
+                                @*@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {*@
+                                <div class="card-footer">
+                                    <a class="btn btn-warning">Редагувати</a>
+                                    <a class="btn btn-danger">Видалити</a>
+                                </div>
+                                @*}*@
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
             <div class="btn-group m-auto"
                  page-model="@Model.PaggingInfo" page-action="Index"

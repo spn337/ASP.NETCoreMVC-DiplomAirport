@@ -5,11 +5,14 @@ using DiplomToyStore.Helpers;
 using DiplomToyStore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace DiplomToyStore
 {
@@ -55,6 +58,21 @@ namespace DiplomToyStore
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseStaticFiles();
+
+            string dirPathSave = Path.Combine(
+                env.ContentRootPath, Configuration.GetValue<string>("ImagesPath"));
+            if(!Directory.Exists(dirPathSave))
+            {
+                Directory.CreateDirectory(dirPathSave);
+            }
+
+            //співставляємо шляхи з нашими кастомними каталогами
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(dirPathSave),
+                RequestPath = new PathString("/images")
+            });
+
 
             app.UseRouting();
 

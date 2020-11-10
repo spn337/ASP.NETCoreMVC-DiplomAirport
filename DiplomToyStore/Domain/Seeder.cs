@@ -86,6 +86,7 @@ namespace DiplomToyStore.Domain
                             Description = "У цієї лялечки є одна особливість! У неї волосся пофарбоване під колір сукні! Такий незвичайний і ефектний образ виділяє її серед інших. Її плаття мерехтить, завдяки яскравим паєткам. Можна вибрати лялечку в блакитній, золотистій або фіолетовій сукні. Ігри в ляльки сприяють розвитку дрібної моторики, уяви та комунікативних навичок дитини. Іграшка зроблена з безпечних матеріалів.",
                             Price = 136.42M,
                             Count = 100,
+                            //Img = new string[] { "test_doll.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Dolls"])?.Id
                         },
@@ -95,6 +96,7 @@ namespace DiplomToyStore.Domain
                             Description = "",
                             Price = 203.40M,
                             Count = 21,
+                           // Img = new string[] { "test_babydoll.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["BabyDolls"])?.Id
                         },
@@ -104,6 +106,7 @@ namespace DiplomToyStore.Domain
                             Description = "Вона виконана з мякого, міцного матеріалу в яскравих райдужних кольорах. Крім мякої частини у брязкальця є невелика прозора ручка з пластмаси, всередині якої знаходяться маленькі кульки. Якщо потрясти іграшку, то вона буде гриміти. Такі звуки привертають увагу малюка і заспокоюють його.",
                             Price = 183.47M,
                             Count = 24,
+                            //Img = new string[] { "test_rattle.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Rattles"])?.Id
                         },
@@ -113,6 +116,7 @@ namespace DiplomToyStore.Domain
                             Description = "Вона виконана з мякого, міцного матеріалу в яскЗаводний літачок - прекрасний подарунок для дітей, які обожнюють гратися різними видами транспорту. Літачок у яскравому кольорі обовязково сподобається кожному невгамовному малюку. Виготовлений з полімерних матеріалів та є безпечним для здоровя дитини. Призначена іграшка для дітей віком від 3-х років. В наявності 3 види на колесиках.",
                             Price = 18.90M,
                             Count = 100,
+                           // Img = new string[] { "test_wheelchair.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["WheelChair"])?.Id
                         },
@@ -122,6 +126,7 @@ namespace DiplomToyStore.Domain
                             Description = "",
                             Price = 758.18M,
                             Count = 100,
+                            //Img = new string[] { "test_constructor.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Constructors"])?.Id
                         },
@@ -131,6 +136,7 @@ namespace DiplomToyStore.Domain
                             Description = "Опис і переваги роликів Scale Sport: виріб торгової марки Scale Sport; устілка 18 - 20,5 см можливість тривалої експлуатації -кнопкова система регулювання на 4 розміру; поліпропіленові оболонки і манжети;",
                             Price = 758.18M,
                             Count = 5,
+                            //Img = new string[] { "test_roller.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Rollers"])?.Id
                         },
@@ -140,6 +146,7 @@ namespace DiplomToyStore.Domain
                             Description = "Максимальне навантаження, кг 50 кг, Вік: 3, Колір: MIX кольорів",
                             Price = 1267.92M,
                             Count = 5,
+                           // Img = new string[] { "test_scooter.jpg" },
                             CategoryId = context.Categories
                                 .FirstOrDefault(x => x.Name == categories["Scooters"])?.Id
                         });

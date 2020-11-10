@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DiplomToyStore.Models
@@ -13,6 +14,8 @@ namespace DiplomToyStore.Models
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Count { get; set; }
+
+        public virtual ICollection<ProductPhoto> Children { get; set; }
 
 
         [ForeignKey("Category")]

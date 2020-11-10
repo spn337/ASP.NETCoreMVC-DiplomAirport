@@ -23,12 +23,14 @@
                         {
                             if (User.IsInRole("Admin"))
                             {
-                                <div class="float-left">
-                                    <a class="btn btn-primary ml-1"
-                                       asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
-                                    <a class="btn btn-primary ml-1"
-                                       asp-controller="Administration" asp-action="ListUsers">Manage Users</a>
-                                </div>
+                        <div class="float-left">
+                            <a class="btn btn-primary ml-1"
+                               asp-controller="Administration" asp-action="ListProducts">Manage Products</a>
+                            <a class="btn btn-primary ml-1"
+                               asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
+                            <a class="btn btn-primary ml-1"
+                               asp-controller="Administration" asp-action="ListUsers">Manage Users</a>
+                        </div>
                             }
                             <form method="post" asp-controller="Account" asp-action="Logout">
                                 <button type="submit" class="btn btn-primary float-right">

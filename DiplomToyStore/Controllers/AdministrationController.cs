@@ -1,4 +1,5 @@
-﻿using DiplomToyStore.Models;
+﻿using DiplomToyStore.Domain.AbstractRepo;
+using DiplomToyStore.Models;
 using DiplomToyStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,18 +18,24 @@ namespace DiplomToyStore.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AdministrationController> _logger;
+        private readonly IProductRepository _repository;
 
         public AdministrationController(
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<AdministrationController> logger)
+            ILogger<AdministrationController> logger,
+            IProductRepository repository
+            )
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _logger = logger;
+            _repository = repository;
         }
 
-
+        #region Products
+        public ViewResult ListProducts() => View(_repository.Products);
+        #endregion
         #region Roles manage
         [HttpGet]
         public IActionResult ListRoles() => View(_roleManager.Roles);

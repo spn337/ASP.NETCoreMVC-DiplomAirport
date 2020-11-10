@@ -1,4 +1,4 @@
-﻿@model ProductListViewModel
+﻿@model HomePageViewModel
 
 @{
     ViewData["Title"] = "HomePage";
@@ -16,7 +16,8 @@
                     @foreach (var item in Model.Products)
                     {
                         <div class="card mb-4" style="width: 18rem;">
-                            <img class="card-img-top" src ="~/img/2.jpg" alt="@item.Name" />
+                            <img class="card-img-top" src ="~/img/2.jpg" alt="@item.Name"
+                                  asp-append-version="true"/>
                             <div class="card-body">
                                 <h5 class="card-title">@item.Name</h5>
                                 <div class="d-flex justify-content-between">

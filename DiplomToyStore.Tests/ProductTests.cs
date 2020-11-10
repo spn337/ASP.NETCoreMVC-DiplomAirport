@@ -33,8 +33,8 @@ namespace DiplomToyStore.Tests
                 PageSize = 3
             };
 
-            ProductListViewModel result = controller.Index(null, 2).ViewData.Model
-                as ProductListViewModel;
+            HomePageViewModel result = controller.Index(null, 2).ViewData.Model
+                as HomePageViewModel;
 
             PageViewModel paggingInfo = result.PaggingInfo;
             Assert.Equal(2, paggingInfo.CurrentPage);
@@ -60,8 +60,8 @@ namespace DiplomToyStore.Tests
                 PageSize = 3
             };
 
-            ProductListViewModel result = controller.Index("Cat2", 1).ViewData.Model
-                as ProductListViewModel;
+            HomePageViewModel result = controller.Index("Cat2", 1).ViewData.Model
+                as HomePageViewModel;
 
             Product[] products = result.Products.ToArray();
             Assert.Equal(2, products.Length);
@@ -106,8 +106,8 @@ namespace DiplomToyStore.Tests
                 PageSize = 3
             };
 
-            Func<ViewResult, ProductListViewModel> GetModel
-                = result => result?.ViewData?.Model as ProductListViewModel;
+            Func<ViewResult, HomePageViewModel> GetModel
+                = result => result?.ViewData?.Model as HomePageViewModel;
 
             int? res1 = GetModel(controller.Index("Cat1"))?.PaggingInfo.TotalItems;
             int? res2 = GetModel(controller.Index("Cat2"))?.PaggingInfo.TotalItems;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiplomToyStore.ViewModels.Products
 {
-    public class ProductListViewModel
+    public class HomePageViewModel
     {
         public IEnumerable<Product> Products { get; set; }
         public PageViewModel PaggingInfo { get; set; }

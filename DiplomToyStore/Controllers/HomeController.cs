@@ -17,7 +17,7 @@ namespace DiplomToyStore.Controllers
 
         [HttpGet]
         public ViewResult Index(string category, int productPage = 1)
-            => View(new ProductListViewModel
+            => View(new HomePageViewModel
             {
                 Products = _repository.Products
                     .Where(p => category == null || p.Category.Name == category)

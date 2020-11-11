@@ -58,6 +58,16 @@ namespace DiplomToyStore.Controllers
         #region Products manage
         [HttpGet]
         public ViewResult ListCategories() => View(_categoryRepository.Categories);
+
+        [HttpGet]
+        public ViewResult CreateCategory() => View();
+
+        [HttpPost]
+        public IActionResult CreateCategory(Category model)
+        {
+            _categoryRepository.AddCategory(model);
+            return RedirectToAction("ListCategories", "Administration");
+        }
         #endregion
         #region Roles manage
         [HttpGet]

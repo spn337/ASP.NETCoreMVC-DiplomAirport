@@ -54,6 +54,11 @@ namespace DiplomToyStore.Controllers
             return RedirectToAction("ListProducts", "Administration");
         }
         #endregion
+
+        #region Products manage
+        [HttpGet]
+        public ViewResult ListCategories() => View(_categoryRepository.Categories);
+        #endregion
         #region Roles manage
         [HttpGet]
         public ViewResult ListRoles() => View(_roleManager.Roles);

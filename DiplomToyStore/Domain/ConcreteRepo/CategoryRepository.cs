@@ -1,18 +1,16 @@
 ﻿using DiplomToyStore.Domain.AbstractRepo;
 using DiplomToyStore.Models;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace DiplomToyStore.Domain.ConcreteRepo
 {
-    public class EFProductRepository : IProductRepository
+    public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext _context;
-        public EFProductRepository(AppDbContext context)
+        public CategoryRepository(AppDbContext context)
         {
             _context = context;
         }
-        public IQueryable<Product> Products
-            => _context.Products;
-
+        public IEnumerable<Category> Categories => _context.Categories;
     }
 }

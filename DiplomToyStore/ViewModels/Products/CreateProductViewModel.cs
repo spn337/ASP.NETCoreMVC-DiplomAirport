@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using DiplomToyStore.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DiplomToyStore.Models
+namespace DiplomToyStore.ViewModels.Products
 {
-    [Table("tblProducts")]
-    public class Product
+    public class CreateProductViewModel
     {
-        public int Id { get; set; }
-
-        [Required(ErrorMessage ="Please enter a product name")]
+        [Required(ErrorMessage = "Please enter a product name")]
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -21,11 +19,7 @@ namespace DiplomToyStore.Models
 
         public int Count { get; set; } = 1;
 
-        public virtual ICollection<ProductPhoto> Children { get; set; }
-
-
-        [ForeignKey("Category")]
         public int? CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+        public Category Category { get; set; }
     }
 }

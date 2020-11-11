@@ -69,25 +69,6 @@ namespace DiplomToyStore.Tests
             Assert.True(products[1].Name == "Toy4" && products[0].Category.Name == "Cat2");
         }
 
-        [Fact]
-        public void Can_Select_Categories()
-        {
-            Mock<IProductRepository> mock = new Mock<IProductRepository>();
-            mock.Setup(m => m.Products).Returns(new Product[] {
-                new Product{ Id = 1, Name = "Toy1", Category = new Category{Name = "Cat1" }},
-                new Product{ Id = 2, Name = "Toy2", Category = new Category{Name = "Cat2" }},
-                new Product{ Id = 3, Name = "Toy3", Category = new Category{Name = "Cat1" } },
-                new Product{ Id = 4, Name = "Toy4", Category = new Category{Name = "Cat2" } },
-                new Product{ Id = 5, Name = "Toy5", Category = new Category{Name = "Cat3" } },
-            }.AsQueryable());
-
-            CategoriesViewComponent categories = new CategoriesViewComponent(mock.Object);
-
-            string[] result = ((IEnumerable<string>)(categories.Invoke() as ViewViewComponentResult)
-                .ViewData.Model).ToArray();
-
-            Assert.True(Enumerable.SequenceEqual(new string[] { "Cat1", "Cat2", "Cat3" }, result));
-        }
 
         [Fact]
         public void Generate_Category_Specific_Product_Count()

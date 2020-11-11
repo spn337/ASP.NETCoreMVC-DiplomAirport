@@ -4,6 +4,7 @@ using DiplomToyStore.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -18,31 +19,48 @@ namespace DiplomToyStore.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AdministrationController> _logger;
-        private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public AdministrationController(
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             ILogger<AdministrationController> logger,
-            IProductRepository repository
+            IProductRepository productRepository,
+            ICategoryRepository categoryRepository
             )
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _logger = logger;
-            _repository = repository;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
-        #region Products
-        public ViewResult ListProducts() => View(_repository.Products);
+        #region Products manage
+        [HttpGet]
+        public ViewResult ListProducts() => View(_productRepository.Products);
+
+        [HttpGet]
+        public ViewResult CreateProduct()
+        {
+            ViewBag.Categories = new SelectList(_categoryRepository.Categories, "Id", "Name");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateProduct(Product model)
+        {
+            _productRepository.AddProduct(model);
+            return RedirectToAction("ListProducts", "Administration");
+        }
         #endregion
         #region Roles manage
         [HttpGet]
-        public IActionResult ListRoles() => View(_roleManager.Roles);
+        public ViewResult ListRoles() => View(_roleManager.Roles);
 
 
         [HttpGet]
-        public IActionResult CreateRole() => View();
+        public ViewResult CreateRole() => View();
 
 
         [HttpPost]
@@ -246,7 +264,7 @@ namespace DiplomToyStore.Controllers
 
         #region Users manage
         [HttpGet]
-        public IActionResult ListUsers() => View(_userManager.Users);
+        public ViewResult ListUsers() => View(_userManager.Users);
 
 
         [HttpGet]
@@ -340,7 +358,7 @@ namespace DiplomToyStore.Controllers
 
                 return View("ListUsers");
             }
-            catch(DbUpdateException ex)
+            catch (DbUpdateException ex)
             {
                 _logger.LogError($"Exception Occured: {ex}");
                 ViewBag.ErrorTitle = $"{user.UserName} user is in role";

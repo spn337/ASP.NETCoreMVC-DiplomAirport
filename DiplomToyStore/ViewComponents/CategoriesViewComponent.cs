@@ -6,17 +6,16 @@ namespace DiplomToyStore.ViewComponents
 {
     public class CategoriesViewComponent : ViewComponent
     {
-        private readonly IProductRepository _repository;
-        public CategoriesViewComponent(IProductRepository repository)
+        private readonly ICategoryRepository _repository;
+        public CategoriesViewComponent(ICategoryRepository repository)
         {
             _repository = repository;
         }
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];
-            return View(_repository.Products
-                .Select(x => x.Category.Name)
-                .Distinct()
+            return View(_repository.Categories
+                .Select(x => x.Name)
                 .OrderBy(x => x));
         }
     }

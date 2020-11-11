@@ -41,7 +41,8 @@ namespace DiplomToyStore
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
 
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();

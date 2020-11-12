@@ -19,6 +19,7 @@
             <th class="text-center">Name</th>
             <th class="text-center">Description</th>
             <th class="text-center">Price</th>
+            <th class="text-center">Category</th>
             <th class="text-center">Actions</th>
         </tr>
         @foreach (var item in Model)
@@ -28,6 +29,7 @@
                 <td class="text-left align-middle">@item.Name</td>
                 <td class="text-left align-middle">@item.Description</td>
                 <td class="text-center align-middle">@item.Price</td>
+                <td class="text-center align-middle">@item.Category.Name</td>
                 <td class="text-center align-middle " style="width:150px">
                     <form asp-action="DeleteProduct" method="post">
                         <input type="hidden" name="Id" value="@item.Id" />

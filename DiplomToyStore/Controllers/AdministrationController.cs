@@ -47,15 +47,36 @@ namespace DiplomToyStore.Controllers
             ViewBag.Categories = new SelectList(_categoryRepository.Categories, "Id", "Name");
             return View();
         }
+
         [HttpPost]
         public IActionResult CreateProduct(Product model)
         {
             _productRepository.AddProduct(model);
             return RedirectToAction("ListProducts", "Administration");
         }
+
+        [HttpGet]
+        public ViewResult EditProduct(int id)
+        {
+            ViewBag.Categories = new SelectList(_categoryRepository.Categories, "Id", "Name");
+            return View(_productRepository.GetProductById(id));
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(Product model)
+        {
+            if (ModelState.IsValid)
+            {
+                _productRepository.UpdateProduct(model);
+                return RedirectToAction("ListProducts", "Administration");
+
+            }
+            return View(model);
+        }
         #endregion
 
-        #region Products manage
+
+        #region Categories manage
         [HttpGet]
         public ViewResult ListCategories() => View(_categoryRepository.Categories);
 
@@ -69,6 +90,8 @@ namespace DiplomToyStore.Controllers
             return RedirectToAction("ListCategories", "Administration");
         }
         #endregion
+
+
         #region Roles manage
         [HttpGet]
         public ViewResult ListRoles() => View(_roleManager.Roles);

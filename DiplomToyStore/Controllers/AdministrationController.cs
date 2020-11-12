@@ -89,6 +89,23 @@ namespace DiplomToyStore.Controllers
             _categoryRepository.AddCategory(model);
             return RedirectToAction("ListCategories", "Administration");
         }
+
+        [HttpGet]
+        public ViewResult EditCategory(int id)
+            => View(_categoryRepository.Categories.SingleOrDefault(x => x.Id == id));
+
+
+        [HttpPost]
+        public IActionResult EditCategory(Category model)
+        {
+            if (ModelState.IsValid)
+            {
+                _categoryRepository.UpdateCategory(model);
+                return RedirectToAction("ListCategories", "Administration");
+
+            }
+            return View(model);
+        }
         #endregion
 
 

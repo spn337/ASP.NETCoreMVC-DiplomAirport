@@ -17,7 +17,7 @@ namespace DiplomToyStore.Domain.ConcreteRepo
         public IEnumerable<Product> Products =>
             _context.Products.Include(c => c.Category);
 
-        public Product GetProductById(long id) => 
+        public Product GetProductById(int id) => 
             _context.Products.Include(c => c.Category)
             .First(p => p.Id == id);
 

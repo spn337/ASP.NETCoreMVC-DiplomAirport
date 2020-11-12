@@ -73,6 +73,18 @@ namespace DiplomToyStore.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(int id)
+        {
+            var model = _productRepository.GetProductById(id);
+            if(model != null)
+            {
+                _productRepository.DeleteProduct(model);
+                return RedirectToAction("ListProducts", "Administration");
+            }       
+            return View(model);
+        }
         #endregion
 
 
@@ -94,7 +106,6 @@ namespace DiplomToyStore.Controllers
         public ViewResult EditCategory(int id)
             => View(_categoryRepository.Categories.SingleOrDefault(x => x.Id == id));
 
-
         [HttpPost]
         public IActionResult EditCategory(Category model)
         {
@@ -103,6 +114,18 @@ namespace DiplomToyStore.Controllers
                 _categoryRepository.UpdateCategory(model);
                 return RedirectToAction("ListCategories", "Administration");
 
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteCategory(int id)
+        {
+            var model = _categoryRepository.Categories.SingleOrDefault(x => x.Id == id);
+            if (model != null)
+            {
+                _categoryRepository.DeleteCategory(model);
+                return RedirectToAction("ListCategories", "Administration");
             }
             return View(model);
         }

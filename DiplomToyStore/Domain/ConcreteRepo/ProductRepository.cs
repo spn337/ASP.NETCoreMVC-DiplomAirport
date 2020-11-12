@@ -17,7 +17,7 @@ namespace DiplomToyStore.Domain.ConcreteRepo
         public IEnumerable<Product> Products =>
             _context.Products.Include(c => c.Category);
 
-        public Product GetProductById(int id) => 
+        public Product GetProductById(int id) =>
             _context.Products.Include(c => c.Category)
             .First(p => p.Id == id);
 
@@ -38,14 +38,10 @@ namespace DiplomToyStore.Domain.ConcreteRepo
             _context.SaveChanges();
         }
 
-        public void DeleteProduct(int id)
+        public void DeleteProduct(Product product)
         {
-            var product = _context.Products.Find(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                _context.SaveChanges();
-            }
+            _context.Products.Remove(product);
+            _context.SaveChanges();
         }
     }
 }

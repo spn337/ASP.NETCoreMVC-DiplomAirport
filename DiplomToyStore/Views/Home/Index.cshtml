@@ -1,0 +1,47 @@
+﻿@model HomePageViewModel
+
+@{
+    ViewData["Title"] = "HomePage";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div id="categories" class="col-2">
+                @await Component.InvokeAsync("Categories")
+            </div>
+            <div class="col-10">
+                <div class="d-flex justify-content-between flex-wrap ">
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="card mb-4" style="width: 18rem;">
+                            <img class="card-img-top" @*src ="~/img/2.jpg"*@ alt="@item.Name"
+                                  asp-append-version="true"/>
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="card-title">@item.Price</h4>
+                                    <a class="btn btn-warning">В кошик</a>
+                                </div>
+
+                                @*@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {*@
+                                <div class="card-footer">
+                                    <a class="btn btn-warning">Редагувати</a>
+                                    <a class="btn btn-danger">Видалити</a>
+                                </div>
+                                @*}*@
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="btn-group m-auto"
+                 page-model="@Model.PaggingInfo" page-action="Index"
+                 page-classes-enabled="true" page-class="btn"
+                 page-class-normal="btn-secondary" page-class-selected="btn-primary"
+                 page-url-category="@Model.CurrentCategory"></div>
+        }
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomToyStore", "DiplomToyStore\DiplomToyStore.csproj", "{8900D893-63D5-438D-9DCF-C9BEB531D59C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomToyStore.Tests", "DiplomToyStore.Tests\DiplomToyStore.Tests.csproj", "{578A1536-0B95-435D-9833-2775CC16FE60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8900D893-63D5-438D-9DCF-C9BEB531D59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8900D893-63D5-438D-9DCF-C9BEB531D59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8900D893-63D5-438D-9DCF-C9BEB531D59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8900D893-63D5-438D-9DCF-C9BEB531D59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578A1536-0B95-435D-9833-2775CC16FE60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578A1536-0B95-435D-9833-2775CC16FE60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578A1536-0B95-435D-9833-2775CC16FE60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578A1536-0B95-435D-9833-2775CC16FE60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B17E506-9919-423B-9FCE-FC586A886E47}
+	EndGlobalSection
+EndGlobal

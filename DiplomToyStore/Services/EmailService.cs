@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using System;
 
@@ -6,29 +7,38 @@ namespace DiplomToyStore.Helpers
 {
     public class SmtpGoogleServer
     {
-        public readonly string host = "smtp.gmail.com";
-        public readonly int port = 465;
-        public readonly bool useSSL = true;
-        public readonly string login = "spn337test@gmail.com";
-        public readonly string password = "123qweR$";
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public bool UseSSL { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
     }
     public class EmailService
     {
-        private readonly SmtpGoogleServer _smtp;
-
         private readonly ILogger<EmailService> _logger;
-        public EmailService(ILogger<EmailService> logger)
+        private readonly IConfiguration _configuration;
+
+        public EmailService(ILogger<EmailService> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _smtp = new SmtpGoogleServer();
+            _configuration = configuration;
         }
         public void SendEmail(string email, string subject, string message)
         {
             try
             {
+                var smtp = new SmtpGoogleServer()
+                {
+                    Host = _configuration["Data:SmtpGoogleServer:Host"],
+                    Port = Convert.ToInt32(_configuration["Data:SmtpGoogleServer:Port"]),
+                    UseSSL = Convert.ToBoolean(_configuration["Data:SmtpGoogleServer:UseSSL"]),
+                    Login = _configuration["Data:SmtpGoogleServer:Login"],
+                    Password = _configuration["Data:SmtpGoogleServer:Password"]
+                };
+
                 var emailMessage = new MimeMessage();
 
-                emailMessage.From.Add(new MailboxAddress("ToyStore", _smtp.login));
+                emailMessage.From.Add(new MailboxAddress("ToyStore", smtp.Login));
                 emailMessage.To.Add(new MailboxAddress("", email));
                 emailMessage.Subject = subject;
                 emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -40,8 +50,8 @@ namespace DiplomToyStore.Helpers
                 {
                     client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-                    client.Connect(_smtp.host, _smtp.port, _smtp.useSSL);
-                    client.Authenticate(_smtp.login, _smtp.password);
+                    client.Connect(smtp.Host, smtp.Port, smtp.UseSSL);
+                    client.Authenticate(smtp.Login, smtp.Password);
                     client.Send(emailMessage);
                     client.Disconnect(true);
 

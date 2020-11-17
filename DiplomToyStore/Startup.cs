@@ -43,7 +43,7 @@ namespace DiplomToyStore
                 .AddDefaultTokenProviders();
 
             services.Configure<DataProtectionTokenProviderOptions>(o => 
-                o.TokenLifespan = TimeSpan.FromMinutes(1)
+                o.TokenLifespan = TimeSpan.FromHours(1)
             );
 
             services.AddTransient<IProductRepository, ProductRepository>();

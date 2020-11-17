@@ -122,12 +122,25 @@ namespace DiplomToyStore.Controllers
         public IActionResult DeleteCategory(int id)
         {
             var model = _categoryRepository.Categories.SingleOrDefault(x => x.Id == id);
-            if (model != null)
+
+            if (model == null)
+            {
+                ViewBag.ErrorMessage = $"Category with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+
+            try
             {
                 _categoryRepository.DeleteCategory(model);
                 return RedirectToAction("ListCategories", "Administration");
             }
-            return View(model);
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError($"Exception Occured: {ex}");
+                ViewBag.ErrorTitle = $"{model.Name} category is in role";
+                ViewBag.ErrorMessage = $"{model.Name} category cannot be deleted as there are products in this category";
+                return View("Error");
+            }
         }
         #endregion
 

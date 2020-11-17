@@ -31,11 +31,19 @@
                 <td class="text-center align-middle">@item.Price</td>
                 <td class="text-center align-middle">@item.Category.Name</td>
                 <td class="text-center align-middle " style="width:150px">
-                    <form asp-action="DeleteProduct" method="post">
-                        <input type="hidden" name="Id" value="@item.Id" />
-                        <a asp-action="EditProduct" asp-route-id=@item.Id
-                           class="btn btn-sm btn-warning">Edit</a>
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    <form asp-action="DeleteProduct" asp-route-id="@item.Id" method="post">
+                        
+                        <a class="btn btn-sm btn-warning" asp-action="EditProduct" asp-route-id=@item.Id>Edit</a>
+                        
+                        <span id="deleteSpan_@item.Id">
+                            <input type="button" class="btn btn-sm btn-danger" onclick="showConfirmDeleteSpan('@item.Id', true)" value="Delete" />
+                        </span>
+
+                        <div id="confirmDeleteSpan_@item.Id" style="display:none">
+                            <div class="m-3">Are you sure?</div>
+                            <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                            <input type="button" class="btn btn-sm btn-primary" onclick="showConfirmDeleteSpan('@item.Id', false)" value="No" />
+                        </div>
                     </form>
                 </td>
             </tr>

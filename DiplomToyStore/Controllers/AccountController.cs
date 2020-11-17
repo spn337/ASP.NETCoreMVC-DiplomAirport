@@ -27,9 +27,9 @@ namespace DiplomToyStore.Controllers
             _emailService = emailService;
         }
 
-
+        #region Login
         [HttpGet]
-        public IActionResult Login() => View();
+        public ViewResult Login() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,25 +67,14 @@ namespace DiplomToyStore.Controllers
             }
             return View(model);
         }
+        #endregion
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
+        #region Registration
+
 
         [HttpGet]
-        public IActionResult Registration() => View();
+        public ViewResult Registration() => View();
 
-        //[HttpGet]
-        //public IActionResult SendMessage()
-        //{
-        //    _emailService.SendEmail("spn337@gmail.com", "Confirm your account",
-        //                $"Confirm your registration by link");
-        //    return RedirectToAction("Index", "Home");
-        //}
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
@@ -118,17 +107,20 @@ namespace DiplomToyStore.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, role.Name);
 
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var res = await SendMessageAsync(user);
 
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                        new { userId = user.Id, token }, Request.Scheme);
-
-                    _emailService.SendEmail(model.Email, "Confirm your account",
-                        $"Confirm your registration by : <a href='{confirmationLink}'>link</a>");
-
-                    ViewBag.Title = "Registration successful";
-                    ViewBag.Message = "Before you can Login, please confirm your email";
-                    return View("Info");
+                    if (res)
+                    {
+                        ViewBag.Title = "Registration successful";
+                        ViewBag.Message = "Before you can Login, please confirm your email";
+                        return View("Info");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorTitle = "Registration successful";
+                        ViewBag.ErrorMessage = "But we coudn't send message for confirming email. Try confirm in a login page by yourself";
+                        return View("Error");
+                    }
                 }
                 else
                 {
@@ -140,11 +132,85 @@ namespace DiplomToyStore.Controllers
             }
             return View(model);
         }
+        #endregion
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return Json(true);
+            }
+            else
+            {
+                return Json($"Email {email} is already in use");
+            }
+        }
+
+        [HttpGet]
+        public ViewResult AccessDenied() => View();
+
+        #region Confirm Email
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult BeforeConfirmEmail() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> BeforeConfirmEmail(SendEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null && !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    var result = await SendMessageAsync(user);
+                    if (result)
+                    {
+                        ViewBag.Message = "We sent a message. Please check your email";
+                        return View("Info");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Failed to send message";
+                        return View("Error");
+                    }
+                }
+                else
+                {
+                    ViewBag.ErrorTitle = "Email is already confirming";
+                    return View("Error");
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<bool> SendMessageAsync(ApplicationUser user)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var confirmationLink = Url.Action("AfterConfirmEmail", "Account",
+                new { userId = user.Id, token }, Request.Scheme);
+
+            var result = _emailService.SendEmail(user.Email, "Confirm your account",
+                $"Confirm your registration by : <a href='{confirmationLink}'>link</a>");
+
+            return result;
+        }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> AfterConfirmEmail(string userId, string token)
         {
             if (userId == null || token == null)
             {
@@ -177,34 +243,17 @@ namespace DiplomToyStore.Controllers
                 return View("Error");
             }
         }
+        #endregion
 
-
-        [AcceptVerbs("Get", "Post")]
-        public async Task<IActionResult> IsEmailInUse(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if (user == null)
-            {
-                return Json(true);
-            }
-            else
-            {
-                return Json($"Email {email} is already in use");
-            }
-        }
-
-        [HttpGet]
-        public IActionResult AccessDenied() => View();
-
+        #region Forgot and Reset Password
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ForgotPassword() => View();
+        public ViewResult ForgotPassword() => View();
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<IActionResult> ForgotPassword(SendEmailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -230,7 +279,7 @@ namespace DiplomToyStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string email, string token)
+        public ViewResult ResetPassword(string email, string token)
         {
             if (email == null || token == null)
             {
@@ -265,5 +314,6 @@ namespace DiplomToyStore.Controllers
             }
             return View(model);
         }
+        #endregion
     }
 }

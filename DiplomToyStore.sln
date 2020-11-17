@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomToyStore", "DiplomToyStore\DiplomToyStore.csproj", "{8900D893-63D5-438D-9DCF-C9BEB531D59C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomToyStore.Tests", "DiplomToyStore.Tests\DiplomToyStore.Tests.csproj", "{578A1536-0B95-435D-9833-2775CC16FE60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiplomToyStore.Tests", "DiplomToyStore.Tests\DiplomToyStore.Tests.csproj", "{578A1536-0B95-435D-9833-2775CC16FE60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

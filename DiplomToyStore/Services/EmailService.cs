@@ -23,7 +23,7 @@ namespace DiplomToyStore.Helpers
             _logger = logger;
             _configuration = configuration;
         }
-        public void SendEmail(string email, string subject, string message)
+        public bool SendEmail(string email, string subject, string message)
         {
             try
             {
@@ -57,10 +57,12 @@ namespace DiplomToyStore.Helpers
 
                     _logger.LogInformation("Send message will be success");
                 }
+                return true;
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
+                return false;
             }
         }
     }

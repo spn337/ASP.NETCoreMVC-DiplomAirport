@@ -2,7 +2,7 @@
 
 namespace DiplomToyStore.ViewModels
 {
-    public class ForgotPasswordViewModel
+    public class SendEmailViewModel
     {
         [Required]
         [EmailAddress]

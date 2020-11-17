@@ -239,7 +239,7 @@ namespace DiplomToyStore.Controllers
             }
             else
             {
-                ViewBag.ErrorTitle = "Email cannot be confirmed";
+                ViewBag.ErrorTitle = "Email cannot be confirmed or token's lificycle was over";
                 return View("Error");
             }
         }

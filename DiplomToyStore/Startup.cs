@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.IO;
 
 namespace DiplomToyStore
@@ -41,6 +42,10 @@ namespace DiplomToyStore
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.Configure<DataProtectionTokenProviderOptions>(o => 
+                o.TokenLifespan = TimeSpan.FromMinutes(1)
+            );
+
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
 
@@ -62,7 +67,7 @@ namespace DiplomToyStore
 
             string dirPathSave = Path.Combine(
                 env.ContentRootPath, Configuration.GetValue<string>("ImagesPath"));
-            if(!Directory.Exists(dirPathSave))
+            if (!Directory.Exists(dirPathSave))
             {
                 Directory.CreateDirectory(dirPathSave);
             }

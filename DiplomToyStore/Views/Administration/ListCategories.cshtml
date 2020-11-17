@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewBag.Title = "All Categories";
+}
+
+<div class="container mt-5 mb-5">
+
+    <h1 class="text-center">All categories</h1>
+    <hr />
+
+    <div class="text-left mt-4 mb-4">
+        <a asp-action="CreateCategory" class="btn btn-primary">Add Category</a>
+    </div>
+
+    <table class="table table-striped table-bordered table-sm">
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Actions</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+    <tr>
+        <td class="text-center align-middle">@item.Id</td>
+        <td class="text-left align-middle">@item.Name</td>
+        <td class="text-center align-middle " style="width:150px;">
+            <form asp-action="DeleteCategory" asp-route-id="@item.Id" method="post">
+
+                <a class="btn btn-sm btn-warning" asp-action="EditCategory" asp-route-id=@item.Id>Edit</a>
+
+                <span id="deleteSpan_@item.Id">
+                    <input type="button" class="btn btn-sm btn-danger" onclick="showConfirmDeleteSpan('@item.Id', true)" value="Delete" />
+                </span>
+
+                <div id="confirmDeleteSpan_@item.Id" style="display:none">
+                    <div class="m-3">Are you sure?</div>
+                    <button type="submit" class="btn btn-sm btn-danger">Yes</button>
+                    <input type="button" class="btn btn-sm btn-primary" onclick="showConfirmDeleteSpan('@item.Id', false)" value="No" />
+                </div>
+            </form>
+        </td>
+
+    </tr>
+        }
+    </table>
+</div>

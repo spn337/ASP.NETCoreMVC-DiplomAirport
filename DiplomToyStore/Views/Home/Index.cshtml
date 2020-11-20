@@ -11,26 +11,32 @@
             <div id="categories" class="col-2">
                 @await Component.InvokeAsync("Categories")
             </div>
+
             <div class="col-10">
-                <div class="d-flex justify-content-between flex-wrap">
+                <div class="product-items">
                     @foreach (var item in Model.Products)
                     {
                         var photoPath = "~/img/" + (item.PhotoName ?? "default.png");
 
-                        <div class="card mb-4" style="width: 18rem;">
-                            <img class="card-img-top" src =@photoPath alt="@item.Name"
-                                  asp-append-version="true"/>
-                            <div class="card-body">
-                                <h5 class="card-title">@item.Name</h5>
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="card-title">@item.Price</h4>
-                                    <a class="btn btn-warning">В кошик</a>
-                                </div>
+                        <div class="product-col">
+                            <div class="card product-item">
+                                <a class="text-decoration-none text-dark" asp-action="Details" asp-route-id="@item.Id">
+                                    <img class="card-img-top" src=@photoPath alt="@item.Name"
+                                         asp-append-version="true" />
+                                    <div class="card-body">
+                                        <h5 class="card-title product__item-text">@item.Name</h5>
+                                        <div class="d-flex justify-content-between">
+                                            <h4 class="card-title">@item.Price</h4>
+                                            <a class="btn btn-warning">В кошик</a>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     }
                 </div>
             </div>
+
             <div class="btn-group m-auto"
                  page-model="@Model.PaggingInfo" page-action="Index"
                  page-classes-enabled="true" page-class="btn"

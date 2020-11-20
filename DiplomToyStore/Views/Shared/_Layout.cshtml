@@ -4,8 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Airport</title>
-    <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" 
-          asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.css"
+          asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css"
+          asp-append-version="true" />
 </head>
 <body>
     <header class="bg-light pt-2 pb-2">
@@ -24,16 +26,16 @@
                         {
                             if (User.IsInRole("Admin"))
                             {
-                        <div class="float-left">
-                            <a class="btn btn-secondary ml-1"
-                               asp-controller="Administration" asp-action="ListProducts">Products</a>
-                            <a class="btn btn-secondary ml-1"
-                               asp-controller="Administration" asp-action="ListCategories">Categories</a>
-                            <a class="btn btn-secondary ml-1"
-                               asp-controller="Administration" asp-action="ListRoles">Roles</a>
-                            <a class="btn btn-secondary ml-1"
-                               asp-controller="Administration" asp-action="ListUsers">Users</a>
-                        </div>
+                                <div class="float-left">
+                                    <a class="btn btn-secondary ml-1"
+                                       asp-controller="Administration" asp-action="ListProducts">Products</a>
+                                    <a class="btn btn-secondary ml-1"
+                                       asp-controller="Administration" asp-action="ListCategories">Categories</a>
+                                    <a class="btn btn-secondary ml-1"
+                                       asp-controller="Administration" asp-action="ListRoles">Roles</a>
+                                    <a class="btn btn-secondary ml-1"
+                                       asp-controller="Administration" asp-action="ListUsers">Users</a>
+                                </div>
                             }
                             <form method="post" asp-controller="Account" asp-action="Logout">
                                 <button type="submit" class="btn btn-primary float-right">

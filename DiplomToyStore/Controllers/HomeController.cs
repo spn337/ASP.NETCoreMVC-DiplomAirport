@@ -36,5 +36,9 @@ namespace DiplomToyStore.Controllers
 
                 CurrentCategory = category
             });
+
+        [HttpGet]
+        public ViewResult Details(int id) 
+            => View(_repository.GetProductById(id));
     }
 }

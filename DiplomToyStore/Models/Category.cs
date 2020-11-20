@@ -11,6 +11,6 @@ namespace DiplomToyStore.Models
 
         [Required]
         public string Name { get; set; }
-        public virtual ICollection<Product> Children { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

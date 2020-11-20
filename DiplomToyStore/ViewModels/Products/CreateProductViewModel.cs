@@ -1,6 +1,6 @@
 ﻿using DiplomToyStore.Models;
+using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiplomToyStore.ViewModels.Products
@@ -21,5 +21,6 @@ namespace DiplomToyStore.ViewModels.Products
 
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }

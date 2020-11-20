@@ -1,13 +1,18 @@
 ﻿using DiplomToyStore.Domain.AbstractRepo;
 using DiplomToyStore.Models;
 using DiplomToyStore.ViewModels;
+using DiplomToyStore.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,13 +26,17 @@ namespace DiplomToyStore.Controllers
         private readonly ILogger<AdministrationController> _logger;
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IConfiguration _configuration;
 
         public AdministrationController(
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             ILogger<AdministrationController> logger,
             IProductRepository productRepository,
-            ICategoryRepository categoryRepository
+            ICategoryRepository categoryRepository,
+            IWebHostEnvironment hostEnvironment,
+            IConfiguration configuration
             )
         {
             _roleManager = roleManager;
@@ -35,6 +44,8 @@ namespace DiplomToyStore.Controllers
             _logger = logger;
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _hostEnvironment = hostEnvironment;
+            _configuration = configuration;
         }
 
         #region Products manage
@@ -49,10 +60,49 @@ namespace DiplomToyStore.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(Product model)
+        public async Task<IActionResult> CreateProduct(CreateProductViewModel model)
         {
-            _productRepository.AddProduct(model);
-            return RedirectToAction("ListProducts", "Administration");
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = null;
+
+                if (model.Photo != null)
+                {
+                    //string uploadsFolder = Path.Combine(
+                    //    _hostEnvironment.ContentRootPath, 
+                    //    _configuration["ImagesPath"]);  
+                    string uploadsFolder = Path.Combine(
+                        _hostEnvironment.WebRootPath, "img");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    string extensionPhoto = Path.GetExtension(model.Photo.FileName);
+                    uniqueFileName = Guid.NewGuid().ToString() + extensionPhoto;
+
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.Photo.CopyToAsync(fileStream);
+                    }
+                }
+
+                var product = new Product
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Price = model.Price,
+                    Count = model.Count,
+                    CategoryId = model.CategoryId,
+                    PhotoName = uniqueFileName
+                };
+
+                _productRepository.AddProduct(product);
+                return RedirectToAction("ListProducts", "Administration");
+            }
+
+            return View();
         }
 
         [HttpGet]
@@ -78,11 +128,11 @@ namespace DiplomToyStore.Controllers
         public IActionResult DeleteProduct(int id)
         {
             var model = _productRepository.GetProductById(id);
-            if(model != null)
+            if (model != null)
             {
                 _productRepository.DeleteProduct(model);
                 return RedirectToAction("ListProducts", "Administration");
-            }       
+            }
             return View(model);
         }
         #endregion

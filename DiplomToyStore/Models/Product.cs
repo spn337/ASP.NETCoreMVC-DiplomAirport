@@ -21,11 +21,13 @@ namespace DiplomToyStore.Models
 
         public int Count { get; set; } = 1;
 
-        public virtual ICollection<ProductPhoto> Children { get; set; }
+        //public virtual ICollection<ProductPhoto> ProductPhotos { get; set; }
 
 
         [ForeignKey("Category")]
         public int? CategoryId { get; set; }
         public virtual Category Category { get; set; }
+
+        public string PhotoName { get; set; }
     }
 }

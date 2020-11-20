@@ -19,12 +19,13 @@ namespace DiplomToyStore
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             //Add EntityFramework services
@@ -53,6 +54,7 @@ namespace DiplomToyStore
                 .AddRazorRuntimeCompilation();
         }
 
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -65,17 +67,19 @@ namespace DiplomToyStore
 
             app.UseStaticFiles();
 
-            string dirPathSave = Path.Combine(
-                env.ContentRootPath, Configuration.GetValue<string>("ImagesPath"));
-            if (!Directory.Exists(dirPathSave))
+            string uploadsFolder = Path.Combine(
+                        env.ContentRootPath,
+                        Configuration["ImagesPath"]);
+
+            if (!Directory.Exists(uploadsFolder))
             {
-                Directory.CreateDirectory(dirPathSave);
+                Directory.CreateDirectory(uploadsFolder);
             }
 
             //співставляємо шляхи з нашими кастомними каталогами
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(dirPathSave),
+                FileProvider = new PhysicalFileProvider(uploadsFolder),
                 RequestPath = new PathString("/images")
             });
 

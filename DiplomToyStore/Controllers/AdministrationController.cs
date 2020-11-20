@@ -66,7 +66,7 @@ namespace DiplomToyStore.Controllers
             {
                 string uniqueFileName = null;
 
-                if (model.Photo != null)
+                if (model.Photos != null && model.Photos.Count > 0)
                 {
                     //string uploadsFolder = Path.Combine(
                     //    _hostEnvironment.ContentRootPath, 
@@ -78,13 +78,16 @@ namespace DiplomToyStore.Controllers
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
-                    string extensionPhoto = Path.GetExtension(model.Photo.FileName);
-                    uniqueFileName = Guid.NewGuid().ToString() + extensionPhoto;
-
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    foreach (var photo in model.Photos)
                     {
-                        await model.Photo.CopyToAsync(fileStream);
+                        string extensionPhoto = Path.GetExtension(photo.FileName);
+                        uniqueFileName = Guid.NewGuid().ToString() + extensionPhoto;
+
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await photo.CopyToAsync(fileStream);
+                        }
                     }
                 }
 
